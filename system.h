@@ -5,7 +5,7 @@
 
 #define XTFREQ          7372800           //On-board Crystal frequency
 #define PLLMODE         16                //On-chip PLL setting
-#define FCY             XTFREQ*PLLMODE/4  //Instruction Cycle Frequency
+#define FCY             (XTFREQ*PLLMODE/4)  //Instruction Cycle Frequency
 
 // PIN MAPPINGS
 #define DEBUG_LED_GREEN PORTBbits.RB8     // Active low
