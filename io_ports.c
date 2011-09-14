@@ -1,8 +1,8 @@
-#include <p30F4011.h>
+#include "p30F4011.h"
 #include "io_ports.h"
 
 void init_io_ports()
 {
-    TEST_LED_DIR = 0;
-    TEST_LED = 0;
+    DEBUG_LED_GREEN_DIR = 0;  // Set direction as output
+    DEBUG_LED_GREEN = 1;      // LED OFF ( Active low )
 }

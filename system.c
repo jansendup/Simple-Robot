@@ -1,0 +1,17 @@
+#include "p30F4011.h"
+#include "system.h"
+
+_FOSC( 
+	#if PLLMODE == 16 
+		XT_PLL16
+	#endif
+	#if PLLMODE == 8 
+		XT_PLL8
+	#endif
+	#if PLLMODE == 4 
+		XT_PLL4
+	#endif
+	& CSW_FSCM_OFF);  		// Select primary XT clock source with PLL X16\8\4
+
+_FGS(CODE_PROT_OFF);		// Disable Code Protection
+_FWDT(WDT_OFF);				// Disable Watchdog Timer
