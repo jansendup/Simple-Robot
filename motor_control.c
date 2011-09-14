@@ -1,5 +1,6 @@
 #include "p30F4011.h"
 #include "system.h"
+#include "motor_control.h"
 
 #define MOTOR1_DIRECTION PORTEbits.RE0
 #define MOTOR1_DIRECTION_TRIS TRISEbits.TRISE0
