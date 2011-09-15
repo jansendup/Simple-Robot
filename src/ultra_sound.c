@@ -21,6 +21,23 @@ void init_ultra_sound()
 	T2CONbits.TCS = 0;		// Selects internal clock FCY as source
 	PR2 = US_PERIOD;		// Set cut-off timer value.
 
-	IEC0bits.T2IE = 1;				// Enable timer interupt
-	IPC1bits.T2IP = 2;				// Interupt priority
+	IFS0bits.T2IF = 0;		// Clear Timer2 interrupt status flag
+	IEC0bits.T2IE = 1;		// Enable timer interupt
+	IPC1bits.T2IP = 2;		// Interupt priority
+	
+	/** Initialize External Interrupt 2 for signal lock input **/
+	IFS1bits.INT2IF = 0;	// Clear External Interrupt 2 Flag Status bit
+	IRC1bits.INT2E = 1;		// Enable External Interrupt 2
+	INTCON2bits.INT2EP = 1;	// Interrupt on negative edge
+	IPC5bits.INT2IP = 0x2;	// Interupt priority
+}
+
+void __attribute__((__interrupt__)) _T2Interrupt(void)
+{
+	IFS0bits.T2IF = 0;		// Clear Timer2 interrupt status flag
+}
+
+void __attribute__((__interrupt__)) _INT2Interrupt(void)
+{
+	IFS1bits.INT2IF = 0;	// Clear External Interrupt 2 Flag Status bit
 }
