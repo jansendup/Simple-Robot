@@ -27,7 +27,7 @@ void init_ultra_sound()
 	
 	/** Initialize External Interrupt 2 for signal lock input **/
 	IFS1bits.INT2IF = 0;	// Clear External Interrupt 2 Flag Status bit
-	IRC1bits.INT2E = 1;		// Enable External Interrupt 2
+	IEC1bits.INT2IE = 1;		// Enable External Interrupt 2
 	INTCON2bits.INT2EP = 1;	// Interrupt on negative edge
 	IPC5bits.INT2IP = 0x2;	// Interupt priority
 }
