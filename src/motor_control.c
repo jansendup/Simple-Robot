@@ -8,6 +8,12 @@
 #define MOTOR2_DIRECTION PORTEbits.RE2
 #define MOTOR2_DIRECTION_TRIS TRISEbits.TRISE2
 
+#define MOTOR1_ENABLE PORTCbits.RC13
+#define MOTOR1_ENABLE_TRIS TRISEbits.TRISRC13
+
+#define MOTOR2_ENABLE PORTCbits.RC14
+#define MOTOR2_ENABLE_TRIS TRISEbits.TRISRC14
+
 void init_pwm()
 {
 	/** Setup PWM Time Base Control Register **/
@@ -45,9 +51,14 @@ void init_pwm()
 	PDC1 = 0;
 	PDC2 = 0;
 
-	/** Setup motor direction control pins **/
+	/** Setup motor direction and control pins **/
 	MOTOR1_DIRECTION_TRIS = 0;	// Set pin to output
-	MOTOR2_DIRECTION_TRIS = 0;	// Set pin to output
+	MOTOR2_DIRECTION_TRIS = 0;
 	MOTOR1_DIRECTION = 1;		// Initial direction
-	MOTOR2_DIRECTION = 1;		// Initial direction
+	MOTOR2_DIRECTION = 1;
+	
+	MOTOR1_ENABLE_TRIS = 0;		// Set pin to output
+	MOTOR2_ENABLE_TRIS = 0;	
+	MOTOR1_ENABLE = 0;			// Switch motors off
+	MOTOR2_ENABLE = 0;
 }
