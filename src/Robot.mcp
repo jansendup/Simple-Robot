@@ -5,8 +5,8 @@ device=dsPIC30F4011
 [PATH_INFO]
 BuildDirPolicy=BuildDirIsProjectDir
 dir_src=
-dir_bin=
-dir_tmp=
+dir_bin=../build
+dir_tmp=../build/intermediary
 dir_sin=
 dir_inc=C:\Program Files (x86)\Microchip\mplabc30\v3.30c\support\dsPIC30F\h
 dir_lib=
@@ -31,6 +31,9 @@ file_003=.
 file_004=.
 file_005=.
 file_006=.
+file_007=.
+file_008=.
+file_009=.
 [GENERATED_FILES]
 file_000=no
 file_001=no
@@ -39,6 +42,9 @@ file_003=no
 file_004=no
 file_005=no
 file_006=no
+file_007=no
+file_008=no
+file_009=no
 [OTHER_FILES]
 file_000=no
 file_001=no
@@ -47,14 +53,20 @@ file_003=no
 file_004=no
 file_005=no
 file_006=no
+file_007=no
+file_008=no
+file_009=no
 [FILE_INFO]
-file_000=osillators.c
-file_001=main.c
-file_002=io_ports.c
-file_003=motor_control.c
-file_004=osillators.h
+file_000=main.c
+file_001=io_ports.c
+file_002=motor_control.c
+file_003=system.c
+file_004=ultra_sound.c
 file_005=io_ports.h
 file_006=motor_control.h
+file_007=p30F4011.h
+file_008=system.h
+file_009=ultra_sound.h
 [SUITE_INFO]
 suite_guid={479DDE59-4D56-455E-855E-FFF59A3DB57E}
 suite_state=
