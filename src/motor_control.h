@@ -10,6 +10,9 @@
 #define RIGHT_MOTOR 2
 #define PWM_SET_SPEED(MOTOR, DUTY_CYCLE) PDC##MOTOR = DUTY_CYCLE*PWM_SCALE;
 
+#define FORWARD 1
+#define REVERSE 0
+
 void init_pwm(void);
 
 #endif

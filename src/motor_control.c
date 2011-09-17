@@ -54,8 +54,8 @@ void init_pwm()
 	/** Setup motor direction and control pins **/
 	MOTOR1_DIRECTION_TRIS = 0;	// Set pin to output
 	MOTOR2_DIRECTION_TRIS = 0;
-	MOTOR1_DIRECTION = 1;		// Initial direction
-	MOTOR2_DIRECTION = 1;
+	MOTOR1_DIRECTION = FORWARD;	// Initial direction
+	MOTOR2_DIRECTION = FORWARD;
 	
 	MOTOR1_ENABLE_TRIS = 0;		// Set pin to output
 	MOTOR2_ENABLE_TRIS = 0;	
