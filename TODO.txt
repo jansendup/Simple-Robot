@@ -1,1 +1,2 @@
 Get git to work straight of flash drive.
+Push to flash and then to server.
