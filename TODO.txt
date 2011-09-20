@@ -1,0 +1,1 @@
+Get git to work straight of flash drive.
