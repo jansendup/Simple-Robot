@@ -35,6 +35,8 @@ file_007=.
 file_008=.
 file_009=.
 file_010=.
+file_011=.
+file_012=.
 [GENERATED_FILES]
 file_000=no
 file_001=no
@@ -47,6 +49,8 @@ file_007=no
 file_008=no
 file_009=no
 file_010=no
+file_011=no
+file_012=no
 [OTHER_FILES]
 file_000=no
 file_001=no
@@ -59,6 +63,8 @@ file_007=no
 file_008=no
 file_009=no
 file_010=no
+file_011=no
+file_012=no
 [FILE_INFO]
 file_000=main.c
 file_001=io_ports.c
@@ -66,11 +72,13 @@ file_002=motor_control.c
 file_003=system.c
 file_004=ultra_sound.c
 file_005=traps.c
-file_006=io_ports.h
-file_007=motor_control.h
-file_008=p30F4011.h
-file_009=system.h
-file_010=ultra_sound.h
+file_006=ad_converter.c
+file_007=io_ports.h
+file_008=motor_control.h
+file_009=p30F4011.h
+file_010=system.h
+file_011=ultra_sound.h
+file_012=ad_converter.h
 [SUITE_INFO]
 suite_guid={479DDE59-4D56-455E-855E-FFF59A3DB57E}
 suite_state=
