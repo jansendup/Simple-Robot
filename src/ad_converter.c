@@ -2,7 +2,7 @@
 #include "system.h"
 
 #define TAD_MIN 153.85E-9				// See Table 17-9 on p449 of the referance manual. (500ksps)
-#define ADCS (int)(2*TAD_MIN*FCY - 1)	// See Equation 17-1 on p413 of the referance manual.
+#define ADCS_VAL (int)(2*TAD_MIN*FCY - 1)	// See Equation 17-1 on p413 of the referance manual.
 
 #define INTERRUPT_INTERVAL 1
 #define SAMPLE_CYCLES 1
@@ -14,8 +14,8 @@ void init_ad_converter(void)
 
 	// Select the analog conversion clock to match desired data rate with processor clock ADCON3.ADCS<5:0>: A/D Conversion Clock Select bits
 	ADCON3bits.ADRC = 0;	// 0: Use system clock.
-	//ADCON3bits.ADCS = 1/*ADCS*/;	// Setup TAD.
-
+	_ADCS = ADCS_VAL;		// Setup TAD.
+	
 	// Determine how many S/H channels will be used ADCON2<9:8> and ADPCFG<15:0>
 	ADCON2bits.CHPS = 0;	//00 = Converts CH0.
 	ADCON2bits.ALTS = 0;	//0 = Always use MUX A input multiplexer settings.
