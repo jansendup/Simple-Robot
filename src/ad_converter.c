@@ -1,11 +1,24 @@
 #include "p30F4011.h"
 #include "system.h"
+#include "ad_converter.h"
 
 #define TAD_MIN 153.85E-9				// See Table 17-9 on p449 of the referance manual. (500ksps)
 #define ADCS_VAL (int)(2*TAD_MIN*FCY - 1)	// See Equation 17-1 on p413 of the referance manual.
 
 #define INTERRUPT_INTERVAL 1
 #define SAMPLE_CYCLES 1
+
+/*The ADCSSL register specifies the inputs to  be scanned. Each bit in the ADCSSL register
+corresponds to an analog input. Bit 0 corresponds to AN0, bit 1 corresponds to AN1 and so on.
+If a particular bit in the ADCSSL register is ‘1’, the corresponding input is part of the scan
+sequence. 
+The inputs are always scanned from lower to higher numbered inputs, starting at the
+first selected channel after each interrupt occurs.*/
+#define CSSL_VAL 0xFFFF
+#define PCFG_VAL (~CSSL_VAL)
+
+volatile int analog_data[AD_BUFFER_SIZE];
+volatile char new_analog_data;
 
 void init_ad_converter(void)
 {
@@ -23,11 +36,11 @@ void init_ad_converter(void)
 	
 	// Determine how sampling will occur ADCON1.SIMSAM and ADCSSL
 	ADCON1bits.SIMSAM = 0;	// Dissable Simultaneous Sampling
-	ADCSSL = 0xFFFF;		// Select Ports to form part of sample sequence.
+	ADCSSL = CSSL_VAL;		// Select Ports to form part of sample sequence.
 
 	// Select port pins as analog inputs ADPCFG<15:0>, ADPCFG<0> = port0, ADPCFG<1> = port1 ...
-	ADPCFG = 0x0000; // 1 = Analog input pin in Digital mode, port read input enabled, A/D input multiplexer input connected to AVSS
-					 // 0 = Analog input pin in Analog mode, port read input disabled, A/D samples pin voltage
+	ADPCFG = PCFG_VAL;	// 1 = Analog input pin in Digital mode, port read input enabled, A/D input multiplexer input connected to AVSS
+					 	// 0 = Analog input pin in Analog mode, port read input disabled, A/D samples pin voltage
 
 	// Determine how inputs will be allocated to S/H channels ADCHS (A/D Input Select Register)
 	ADCHSbits.CH0NA = 0;	// 0 = Channel 0 negative input is VREF-.
@@ -53,5 +66,16 @@ void init_ad_converter(void)
 
 void __attribute__((__interrupt__)) _ADCInterrupt(void)
 {
+	int *an_data, *buf_data;
+	int i = 0;
+	an_data = analog_data;
+	buf_data = &ADCBUF0;
+	
+	for (i = 0; i < AD_BUFFER_SIZE; i++,an_data++,buf_data++){
+		*analog_data = *buf_data;
+	}
+
 	_ADIF = 0;	// Clear AD interrupt flag.
+	new_analog_data = 1;
+	
 }
