@@ -1,3 +1,3 @@
-Get git to work straight of flash drive.
-Push to flash and then to server.
-Checnge
+- Quadrature Encoder Interface (QEI) for motor control.
+- Process ultra sound readings.
+- Process analog readings.
