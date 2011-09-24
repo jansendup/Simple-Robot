@@ -64,6 +64,12 @@ void init_ad_converter(void)
 	ADCON1bits.ADON = 1;
 }
 
+void process_analog_inputs()
+{
+	new_analog_data = 0;
+	/*TODO: Process analog input data.*/
+}
+
 void __attribute__((__interrupt__)) _ADCInterrupt(void)
 {
 	int *an_data, *buf_data;
