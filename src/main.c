@@ -22,7 +22,7 @@ void _500ms_delay()
 void init()
 {
 	init_io_ports();
-	//init_ad_converter();
+	init_ad_converter();
 	init_pwm();
 	init_ultra_sound();
 }
