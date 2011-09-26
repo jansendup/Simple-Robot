@@ -9,7 +9,7 @@
 #define TRANSMISSION_FREQ 40000
 #define TRANSMISSION_CYCLES 4
 #define TRANSMISSION_LENGTH (int)(TRANSMISSION_CYCLES * FCY / (8.0*TRANSMISSION_FREQ))
-#define OVERHEAD_CORRECTION 20
+#define OVERHEAD_CORRECTION 10
 
 #define US_TIMER_START() T2CONbits.TON = 1;
 #define US_TIMER_STOP() T2CONbits.TON = 0;
@@ -18,10 +18,11 @@
 #define SPEED_OF_SOUND 330.0
 #define CUT_OFF_DISTANCE 1.5
 #define US_TIME_OUT (2*CUT_OFF_DISTANCE/SPEED_OF_SOUND)
-#define US_TIME_OUT_PERIOD (int)(US_TIME_OUT * FCY / 8.0)	// With prescale = 1:8
+#define US_TIME_OUT_PERIOD (int)(US_TIME_OUT * FCY / 8.0)
 #define US_DISTANCE_TO_COUNTS(dis) (int)(2*dis*FCY/(8.0*SPEED_OF_SOUND))
 
 volatile char ultra_sound_idle = 1;
+char signal_received = 0;
 
 void init_ultra_sound()
 {
@@ -38,10 +39,10 @@ void init_ultra_sound()
 	_T2IP = 2;		// Interupt priority
 	
 	/** Initialize External Interrupt 2 for signal lock input **/
-	_INT2IF = 0;	// Clear External Interrupt 2 Flag Status bit
-	_INT2IE = 1;	// Enable External Interrupt 2
-	_INT2EP = 1;	// Interrupt on negative edge
-	_INT2IP = 2;	// Interupt priority
+	_INT0IF = 0;	// Clear External Interrupt 2 Flag Status bit
+	_INT0IE = 1;	// Enable External Interrupt 2
+	_INT0EP = 1;	// Interrupt on negative edge
+	_INT0IP = 2;	// Interupt priority
 	
 	// Initialize transmission enable pin. 
 	TRANSMIT_ENABLE = TRANSMIT_OFF;
@@ -50,9 +51,16 @@ void init_ultra_sound()
 
 void process_ultra_sound()
 {
+	// Process readings
+	if( signal_received )
+	{
+		// TODO: Process readings.
+	}
 	// Restart the timer.
 	US_TIMER_RESET();
-	// Transmit a signal for TRANSMISSION_LENGTH long.
+
+	// Transmit a signal for TRANSMISSION_LENGTH timer counts.
+	signal_received = 0;
 	PR2 = TRANSMISSION_LENGTH;
 	TRANSMIT_ENABLE = TRANSMIT_ON;
 	US_TIMER_START();
@@ -61,7 +69,7 @@ void process_ultra_sound()
 }
 
 // Timer 2 will generate this interrupt when it hasn't been stopped by
-// _INT2Interrupt and the timer's value is greater than the value of its
+// _INT0Interrupt and the timer's value is greater than the value of its
 // periode register or if the signal should stop transmitting.
 void __attribute__((__interrupt__)) _T2Interrupt(void)
 {
@@ -79,8 +87,9 @@ void __attribute__((__interrupt__)) _T2Interrupt(void)
 	}
 }
 
-void __attribute__((__interrupt__)) _INT2Interrupt(void)
+void __attribute__((__interrupt__)) _INT0Interrupt(void)
 {
-	IFS1bits.INT2IF = 0;	// Clear External Interrupt 2 Flag Status bit
+	IFS0bits.INT0IF = 0;	// Clear External Interrupt 2 Flag Status bit
 	US_TIMER_STOP();
+	signal_received = 1;
 }
