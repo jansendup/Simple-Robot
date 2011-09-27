@@ -3,6 +3,7 @@
 #include "io_ports.h"
 #include "motor_control.h"
 
+
 void init_pwm()
 {
 	/** Setup PWM Time Base Control Register **/
@@ -39,5 +40,12 @@ void init_pwm()
 
 	PDC1 = 0;
 	PDC2 = 0;
+}
 
+void motor1_feedback(int current)
+{
+}
+
+void motor2_feedback(int current)
+{
 }

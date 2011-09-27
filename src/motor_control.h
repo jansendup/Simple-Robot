@@ -14,5 +14,7 @@
 #define REVERSE 0
 
 void init_pwm(void);
+void motor1_feedback(int current);
+void motor2_feedback(int current);
 
 #endif

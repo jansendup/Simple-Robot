@@ -8,9 +8,7 @@
 void flash_led_test();
 void init();
 
-extern volatile int analog_data[AD_BUFFER_SIZE];
 extern volatile char new_analog_data;
-
 extern volatile char ultra_sound_idle;
 
 void _500ms_delay()
@@ -49,7 +47,6 @@ void flash_led_test()
 	int i = 0;
     while(1){
         DEBUG_LED = !DEBUG_LED;
-		PORTEbits.RE4 = 1;
 		if((i++%2) == 0){
 			PWM_SET_SPEED(1,50);
 		}

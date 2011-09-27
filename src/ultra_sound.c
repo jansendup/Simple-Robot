@@ -5,6 +5,7 @@
 
 #define TRANSMIT_ON 1
 #define TRANSMIT_OFF 0
+
 #define TRANSMISSION_FREQ 40000
 #define TRANSMISSION_CYCLES 4
 #define TRANSMISSION_LENGTH (int)(TRANSMISSION_CYCLES * FCY / (8.0*TRANSMISSION_FREQ))
@@ -21,7 +22,7 @@
 #define US_DISTANCE_TO_COUNTS(dis) (int)(2*dis*FCY/(8.0*SPEED_OF_SOUND))
 
 volatile char ultra_sound_idle = 1;
-char signal_received = 0;
+volatile char signal_received = 0;
 
 void init_ultra_sound()
 {
