@@ -1,18 +1,7 @@
 #include "p30F4011.h"
 #include "system.h"
+#include "io_ports.h"
 #include "motor_control.h"
-
-#define MOTOR1_DIRECTION PORTEbits.RE0
-#define MOTOR1_DIRECTION_TRIS TRISEbits.TRISE0
-
-#define MOTOR2_DIRECTION PORTEbits.RE2
-#define MOTOR2_DIRECTION_TRIS TRISEbits.TRISE2
-
-#define MOTOR1_ENABLE PORTEbits.RE4
-#define MOTOR1_ENABLE_TRIS TRISEbits.TRISE4
-
-#define MOTOR2_ENABLE PORTEbits.RE5
-#define MOTOR2_ENABLE_TRIS TRISEbits.TRISE5
 
 void init_pwm()
 {
@@ -51,14 +40,4 @@ void init_pwm()
 	PDC1 = 0;
 	PDC2 = 0;
 
-	/** Setup motor direction and control pins **/
-	MOTOR1_DIRECTION_TRIS = 0;	// Set pin to output
-	MOTOR2_DIRECTION_TRIS = 0;
-	MOTOR1_DIRECTION = FORWARD;	// Initial direction
-	MOTOR2_DIRECTION = FORWARD;
-	
-	MOTOR1_ENABLE_TRIS = 0;		// Set pin to output
-	MOTOR2_ENABLE_TRIS = 0;	
-	MOTOR1_ENABLE = 1;			// Switch motors off
-	MOTOR2_ENABLE = 0;
 }

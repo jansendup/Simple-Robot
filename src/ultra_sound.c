@@ -1,9 +1,8 @@
 #include "ultra_sound.h"
 #include "p30F4011.h"
 #include "system.h"
+#include "io_ports.h"
 
-#define TRANSMIT_ENABLE PORTFbits.RF6
-#define TRANSMIT_ENABLE_TRIS TRISFbits.TRISF6
 #define TRANSMIT_ON 1
 #define TRANSMIT_OFF 0
 #define TRANSMISSION_FREQ 40000
@@ -44,9 +43,6 @@ void init_ultra_sound()
 	_INT0EP = 1;	// Interrupt on negative edge
 	_INT0IP = 2;	// Interupt priority
 	
-	// Initialize transmission enable pin. 
-	TRANSMIT_ENABLE = TRANSMIT_OFF;
-	TRANSMIT_ENABLE_TRIS = 0;
 }
 
 void process_ultra_sound()
@@ -62,7 +58,7 @@ void process_ultra_sound()
 	// Transmit a signal for TRANSMISSION_LENGTH timer counts.
 	signal_received = 0;
 	PR2 = TRANSMISSION_LENGTH;
-	TRANSMIT_ENABLE = TRANSMIT_ON;
+	ULTRASOUND_TRANSMIT = TRANSMIT_ON;
 	US_TIMER_START();
 
 	ultra_sound_idle = 0;
@@ -78,7 +74,7 @@ void __attribute__((__interrupt__)) _T2Interrupt(void)
 	{
 		PR2 = US_TIME_OUT_PERIOD;
 		TMR2 = (TRANSMISSION_LENGTH + OVERHEAD_CORRECTION);
-		TRANSMIT_ENABLE = TRANSMIT_OFF;
+		ULTRASOUND_TRANSMIT = TRANSMIT_OFF;
 	}
 	else
 	{
@@ -92,4 +88,5 @@ void __attribute__((__interrupt__)) _INT0Interrupt(void)
 	IFS0bits.INT0IF = 0;	// Clear External Interrupt 2 Flag Status bit
 	US_TIMER_STOP();
 	signal_received = 1;
+	ultra_sound_idle = 1;
 }
