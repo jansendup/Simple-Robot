@@ -4,7 +4,7 @@
 #define PWM_FREQ 20000
 #define PWM_PRESCALE 1
 #define PWM_PER ( FCY / (PWM_FREQ * PWM_PRESCALE) - 1 )
-#define PWM_SCALE (PWM_PER/100)
+#define PWM_SCALE (PWM_PER/50)
 
 #define LEFT_MOTOR 1
 #define RIGHT_MOTOR 2

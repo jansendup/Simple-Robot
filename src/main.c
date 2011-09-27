@@ -30,7 +30,7 @@ void init()
 int main()
 {
 	init();
-	//flash_led_test();
+	flash_led_test();
 
 	/** System Loop **/
 	while(1)
@@ -46,8 +46,17 @@ int main()
 
 void flash_led_test()
 {
+	int i = 0;
     while(1){
         DEBUG_LED_GREEN = !DEBUG_LED_GREEN;
+		PORTEbits.RE4 = 1;
+		if((i++%2) == 0){
+			PWM_SET_SPEED(1,50);
+		}
+		else{
+			PWM_SET_SPEED(1,80);
+			//PDC1 = PWM_PER;
+		}
         _500ms_delay();
     }
 }

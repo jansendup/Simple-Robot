@@ -59,6 +59,6 @@ void init_pwm()
 	
 	MOTOR1_ENABLE_TRIS = 0;		// Set pin to output
 	MOTOR2_ENABLE_TRIS = 0;	
-	MOTOR1_ENABLE = 0;			// Switch motors off
+	MOTOR1_ENABLE = 1;			// Switch motors off
 	MOTOR2_ENABLE = 0;
 }
