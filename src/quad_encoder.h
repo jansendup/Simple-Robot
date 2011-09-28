@@ -1,6 +1,7 @@
-#ifndef QUAD_ENCODE
-#define QUAD_ENCODE
+#ifndef QUAD_ENCODER
+#define QUAD_ENCODER
 
-void init_quad_encode(void);
+void init_quad_encoder(void);
 
 #endif
+

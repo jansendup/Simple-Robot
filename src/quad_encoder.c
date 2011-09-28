@@ -1,5 +1,5 @@
 #include "quad_encoder.h"
 
-void init_quad_encode(void)
+void init_quad_encoder(void)
 {
 }
