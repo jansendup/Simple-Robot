@@ -4,6 +4,8 @@
 #include "ultra_sound.h"
 #include "motor_control.h"
 #include "ad_converter.h"
+#include "quad_encoder.h"
+#include "lcd.h"
 
 void flash_led_test();
 void init();
@@ -11,16 +13,12 @@ void init();
 extern volatile char new_analog_data;
 extern volatile char ultra_sound_idle;
 
-void _500ms_delay()
-{
-    long i;
-    for(i = 0; i < 7000000L; i++);
-}
-
 void init()
 {
 	init_io_ports();
-	init_ad_converter();
+    init_lcd();
+	init_quad_encoder();
+    init_ad_converter();
 	init_pwm();
 	init_ultra_sound();
 }
@@ -53,6 +51,6 @@ void flash_led_test()
 		else{
 			PWM_SET_SPEED(1,80);
 		}
-        _500ms_delay();
+        delay_ms(500);
     }
 }
