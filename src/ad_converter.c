@@ -6,7 +6,7 @@
 #define ADCS_VAL           (int)(2*TAD_MIN*FCY - 1)	// See Equation 17-1 on p413 of the referance manual.
 
 #define AD_PORT_COUNT       7
-#define SAMPLES_PER_PORT    2
+#define SAMPLES_PER_PORT    1
 #define AD_BUFFER_SIZE     (AD_PORT_COUNT * SAMPLES_PER_PORT)
 #define INTERRUPT_INTERVAL  AD_BUFFER_SIZE
 #define SAMPLE_CYCLES       1
