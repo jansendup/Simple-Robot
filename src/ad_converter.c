@@ -77,7 +77,8 @@ void init_ad_converter(void)
 
 void process_analog_inputs()
 {
-    int i,k,*value;
+    char i,k;
+    int *value;
 	value = analog_data;
 
     /*TODO: Process analog input data.*/
