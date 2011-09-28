@@ -35,10 +35,10 @@ void init_quad_encoder(void)
 }
 void __attribute__((__interrupt__)) _INT1Interrupt(void)
 {
-	IFS0bits.INT0IF = 0;	// Clear External Interrupt 2 Flag Status bit
+	IFS0bits.INT1IF = 0;	// Clear External Interrupt 2 Flag Status bit
 }
 
 void __attribute__((__interrupt__)) _INT2Interrupt(void)
 {
-	IFS0bits.INT0IF = 0;	// Clear External Interrupt 2 Flag Status bit
+	IFS0bits.INT2IF = 0;	// Clear External Interrupt 2 Flag Status bit
 }
