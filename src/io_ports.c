@@ -1,6 +1,9 @@
 #include "p30F4011.h"
 #include "io_ports.h"
 
+int  reg1;
+char reg2;
+
 void init_io_ports()
 {
     // Configure as outputs:
@@ -26,4 +29,38 @@ void init_io_ports()
     DEBUG_LED = 1;        // LED OFF ( Active low )
 	MOTOR1_ENABLE = 0;    // Switch motors off
 	MOTOR2_ENABLE = 0;
+}
+
+
+void write_reg_1(int bits, int mask)
+{
+    char i;
+    reg1 = (reg1&mask) | bits;
+
+    SHIFT_REG_1_STROBE = 0;
+	for(i = 0; i < 16; i++)
+	{
+        SHIFT_REG_1_CLOCK = 0;
+        SHIFT_REG_1_DATA = bits;
+        SHIFT_REG_1_CLOCK = 1;
+		bits >>= 1;
+	}
+    SHIFT_REG_1_STROBE = 1;
+	
+}
+
+void write_reg_2(char bits, char mask)
+{
+    char i;
+    reg2 = (reg2&mask) | bits;
+
+    SHIFT_REG_2_STROBE = 0;
+	for(i = 0; i < 8; i++)
+	{
+        SHIFT_REG_2_CLOCK = 0;
+        SHIFT_REG_2_DATA = bits;
+        SHIFT_REG_2_CLOCK = 1;
+		bits >>= 1;
+	}
+    SHIFT_REG_2_STROBE = 1;
 }
