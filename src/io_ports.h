@@ -54,11 +54,13 @@
 #define _7SEG_1B_MASK (~(1<<1))
 #define _7SEG_1C_MASK (~(1<<2))
 #define _7SEG_1D_MASK (~(1<<3))
+#define _7SEG_1_MASK  (_7SEG_1A_MASK & _7SEG_1B_MASK & _7SEG_1C_MASK & _7SEG_1D_MASK)
 
 #define _7SEG_2A_MASK (~(1<<4))
 #define _7SEG_2B_MASK (~(1<<5))
 #define _7SEG_2C_MASK (~(1<<6))
 #define _7SEG_2D_MASK (~(1<<7))
+#define _7SEG_2_MASK  (_7SEG_2A_MASK & _7SEG_2B_MASK & _7SEG_2C_MASK & _7SEG_2D_MASK)
 
 #define LED1_MASK     (~(1<<8))
 #define LED2_MASK     (~(1<<9))
@@ -67,6 +69,7 @@
 #define LED5_MASK     (~(1<<12))
 #define LED6_MASK     (~(1<<13))
 #define LED7_MASK     (~(1<<14))
+#define LED_MASK      (LED1_MASK & LED2_MASK & LED3_MASK & LED4_MASK & LED5_MASK & LED6_MASK & LED7_MASK)
 
 #define BUZZER_MASK   (~(1<<15))
 
