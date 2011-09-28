@@ -32,7 +32,7 @@ void init_io_ports()
 }
 
 
-void write_reg_1(int bits, int mask)
+void write_reg1(int bits, int mask)
 {
     char i;
     reg1 = (reg1&mask) | bits;
@@ -49,7 +49,7 @@ void write_reg_1(int bits, int mask)
 	
 }
 
-void write_reg_2(char bits, char mask)
+void write_reg2(char bits, char mask)
 {
     char i;
     reg2 = (reg2&mask) | bits;

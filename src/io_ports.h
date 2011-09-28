@@ -50,47 +50,78 @@
 #define SHIFT_REG_2_STROBE       PORT_MAP(D,3)
 #define SHIFT_REG_2_STROBE_TRIS  TRIS_MAP(D,3)
 
-#define _7SEG_1A_MASK (~1)
-#define _7SEG_1B_MASK (~(1<<1))
-#define _7SEG_1C_MASK (~(1<<2))
-#define _7SEG_1D_MASK (~(1<<3))
+#define _7SEG_1A      (1)
+#define _7SEG_1B      (1<<1)
+#define _7SEG_1C      (1<<2)
+#define _7SEG_1D      (1<<3)
+
+#define _7SEG_1A_MASK (~_7SEG_1A)
+#define _7SEG_1B_MASK (~_7SEG_1B)
+#define _7SEG_1C_MASK (~_7SEG_1C)
+#define _7SEG_1D_MASK (~_7SEG_1D)
 #define _7SEG_1_MASK  (_7SEG_1A_MASK & _7SEG_1B_MASK & _7SEG_1C_MASK & _7SEG_1D_MASK)
 
-#define _7SEG_2A_MASK (~(1<<4))
-#define _7SEG_2B_MASK (~(1<<5))
-#define _7SEG_2C_MASK (~(1<<6))
-#define _7SEG_2D_MASK (~(1<<7))
+#define _7SEG_2A      (1<<4)
+#define _7SEG_2B      (1<<5)
+#define _7SEG_2C      (1<<6)
+#define _7SEG_2D      (1<<7)
+
+#define _7SEG_2A_MASK (~_7SEG_2A)
+#define _7SEG_2B_MASK (~_7SEG_2B)
+#define _7SEG_2C_MASK (~_7SEG_2C)
+#define _7SEG_2D_MASK (~_7SEG_2D)
 #define _7SEG_2_MASK  (_7SEG_2A_MASK & _7SEG_2B_MASK & _7SEG_2C_MASK & _7SEG_2D_MASK)
 
-#define LED1_MASK     (~(1<<8))
-#define LED2_MASK     (~(1<<9))
-#define LED3_MASK     (~(1<<10))
-#define LED4_MASK     (~(1<<11))
-#define LED5_MASK     (~(1<<12))
-#define LED6_MASK     (~(1<<13))
-#define LED7_MASK     (~(1<<14))
+#define LED1          (1<<8)
+#define LED2          (1<<9)
+#define LED3          (1<<10)
+#define LED4          (1<<11)
+#define LED5          (1<<12)
+#define LED6          (1<<13)
+#define LED7          (1<<14)
+
+#define LED1_MASK     (~LED1)
+#define LED2_MASK     (~LED2)
+#define LED3_MASK     (~LED3)
+#define LED4_MASK     (~LED4)
+#define LED5_MASK     (~LED5)
+#define LED6_MASK     (~LED6)
+#define LED7_MASK     (~LED7)
 #define LED_MASK      (LED1_MASK & LED2_MASK & LED3_MASK & LED4_MASK & LED5_MASK & LED6_MASK & LED7_MASK)
 
 #define BUZZER_MASK   (~(1<<15))
 
-#define LCD_DB4_MASK   (~1)
-#define LCD_DB5_MASK   (~(1<<1))
-#define LCD_DB6_MASK   (~(1<<2))
-#define LCD_DB7_MASK   (~(1<<3))
-#define LCD_EN_MASK    (~(1<<4))
-#define LCD_RW_MASK    (~(1<<5))
-#define LCD_RS_MASK    (~(1<<6))
-#define LCD_BL_MASK    (~(1<<7))
+#define LCD_DB4        (1)
+#define LCD_DB5        (1<<1)
+#define LCD_DB6        (1<<2)
+#define LCD_DB7        (1<<3)
+#define LCD_EN         (1<<4)
+#define LCD_RW         (1<<5)
+#define LCD_RS         (1<<6)
+#define LCD_BL         (1<<7)
 
-#define LCD_NIBBLE_MASK              (LCD_DB4 & LCD_DB5 & LCD_DB6 & LCD_DB7)
-#define LCD_CONTROL_MASK             (LCD_EN & LCD_RW & LCD_RS)
-#define LCD_CONTROL_SIGNAL(EN,RW,RS) ( EN*(~LCD_EN_MASK) | RW*(~LCD_RW_MASK) | RS*(~LCD_RS_MASK))
+#define LCD_DB4_MASK   (~LCD_DB4)
+#define LCD_DB5_MASK   (~LCD_DB5)
+#define LCD_DB6_MASK   (~LCD_DB6)
+#define LCD_DB7_MASK   (~LCD_DB7)
+#define LCD_EN_MASK    (~LCD_EN)
+#define LCD_RW_MASK    (~LCD_RW)
+#define LCD_RS_MASK    (~LCD_RS)
+#define LCD_BL_MASK    (~LCD_BL)
+
+#define LCD_NIBBLE_MASK              (LCD_DB4_MASK & LCD_DB5_MASK & LCD_DB6_MASK & LCD_DB7_MASK)
+#define LCD_CONTROL_MASK             (LCD_EN_MASK & LCD_RW_MASK & LCD_RS_MASK)
+
+#define bit_set_reg1(BIT)     write_reg1(BIT,~BIT)
+#define bit_set_reg2(BIT)     write_reg2(BIT,~BIT)
+#define bit_clear_reg1(BIT)   write_reg1(0,~BIT)
+#define bit_clear_reg2(BIT)   write_reg2(0,~BIT)
 
 #include "system.h"
 
 void init_io_ports(void);
 
-void write_reg_1(int bits, int mask);
-void write_reg_2(char bits, char mask);
+void write_reg1(int bits, int mask);
+void write_reg2(char bits, char mask);
 
 #endif
