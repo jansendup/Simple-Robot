@@ -33,12 +33,13 @@ void init_quad_encoder(void)
     _INT2EP = 1;    // Interrupt on negative edge
     _INT2IP = 2;    // Interupt priority
 }
+
 void __attribute__((__interrupt__)) _INT1Interrupt(void)
 {
-	IFS0bits.INT1IF = 0;	// Clear External Interrupt 2 Flag Status bit
+	_INT1IF = 0;	// Clear External Interrupt 2 Flag Status bit
 }
 
 void __attribute__((__interrupt__)) _INT2Interrupt(void)
 {
-	IFS0bits.INT2IF = 0;	// Clear External Interrupt 2 Flag Status bit
+	_INT2IF = 0;	// Clear External Interrupt 2 Flag Status bit
 }
