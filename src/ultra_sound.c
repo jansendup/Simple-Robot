@@ -38,9 +38,9 @@ void init_ultra_sound()
 	_T2IE = 1;		// Enable timer interupt
 	_T2IP = 2;		// Interupt priority
 	
-	/** Initialize External Interrupt 2 for signal lock input **/
-	_INT0IF = 0;	// Clear External Interrupt 2 Flag Status bit
-	_INT0IE = 1;	// Enable External Interrupt 2
+	/** Initialize External Interrupt 0 for signal lock input **/
+	_INT0IF = 0;	// Clear External Interrupt 0 Flag Status bit
+	_INT0IE = 1;	// Enable External Interrupt 0
 	_INT0EP = 1;	// Interrupt on negative edge
 	_INT0IP = 2;	// Interupt priority
 	
