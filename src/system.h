@@ -7,4 +7,7 @@
 #define PLLMODE         16                //On-chip PLL setting
 #define FCY             (XTFREQ*PLLMODE/4)  //Instruction Cycle Frequency
 
+extern void delay_us(int us);
+extern void delay_ms(int ms);
+
 #endif
