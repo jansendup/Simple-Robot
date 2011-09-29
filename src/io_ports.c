@@ -1,8 +1,9 @@
 #include "p30F4011.h"
 #include "io_ports.h"
+#include "system.h"
 
-int  reg1;
-char reg2;
+int  reg1 = 0;
+char reg2 = 0;
 
 void init_io_ports()
 {
@@ -38,12 +39,11 @@ void write_reg1(int bits, int mask)
     reg1 = (reg1&mask) | bits;
 
     SHIFT_REG_1_STROBE = 0;
-	for(i = 0; i < 16; i++)
+	for(i = 15; i >= 0; i--)
 	{
         SHIFT_REG_1_CLOCK = 0;
-        SHIFT_REG_1_DATA = bits;
+        SHIFT_REG_1_DATA = (reg1 >> i);
         SHIFT_REG_1_CLOCK = 1;
-		bits >>= 1;
 	}
     SHIFT_REG_1_STROBE = 1;
 	
@@ -53,14 +53,12 @@ void write_reg2(char bits, char mask)
 {
     char i;
     reg2 = (reg2&mask) | bits;
-
     SHIFT_REG_2_STROBE = 0;
-	for(i = 0; i < 8; i++)
+	for(i = 7; i >= 0 ; i--)
 	{
         SHIFT_REG_2_CLOCK = 0;
-        SHIFT_REG_2_DATA = bits;
+        SHIFT_REG_2_DATA = (reg2 >> i);
         SHIFT_REG_2_CLOCK = 1;
-		bits >>= 1;
 	}
     SHIFT_REG_2_STROBE = 1;
 }

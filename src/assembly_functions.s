@@ -21,6 +21,6 @@ _delay_ms:
          repeat  #ms_cycles-4
          nop
          dec     w0,w0
-         bra     NZ,_delay_us
+         bra     NZ,_delay_ms
          return
 .end

@@ -46,11 +46,18 @@ void flash_led_test()
     while(1){
         DEBUG_LED = !DEBUG_LED;
 		if((i++%2) == 0){
-			PWM_SET_SPEED(1,50);
+			//bit_set_reg2(LCD_BL);
+            
+			//PWM_SET_SPEED(1,50);
+            //lcd_character_write('H');
 		}
 		else{
-			PWM_SET_SPEED(1,80);
+			//PWM_SET_SPEED(1,80);
+            //lcd_scrn_clear();
+			//bit_clear_reg2(LCD_BL);
+            //write_reg1(0xFFFF,0);
 		}
-        delay_ms(500);
+        write_reg1(~(1<<(i%16)),0);
+        delay_ms(250);
     }
 }
