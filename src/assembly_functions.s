@@ -1,13 +1,14 @@
-.text
 .global _delay_us
 .global _delay_ms
 
-fosc    = 7372800
-pll     = 16
-fcy     = fosc*pll/4
-ms_cycles = fcy/2000
-us_cycles = fcy/1000000
- 
+.equ fosc, #7372800
+.equ pll,  #16
+.equ fcy,  fosc*pll/4
+.equ ms_cycles, fcy/2000
+.equ us_cycles, fcy/1000000
+
+ .text
+
  _delay_us:
          repeat  #us_cycles-4
          nop
@@ -23,4 +24,5 @@ _delay_ms:
          dec     w0,w0
          bra     NZ,_delay_ms
          return
+         
 .end
