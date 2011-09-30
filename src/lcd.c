@@ -31,25 +31,25 @@ void init_lcd(void)
 {
 
 	lcd_nibble_write(0b0011, LCD_INST_WRITE_SIGNAL);
-	delay_us(5000);
+	delay_ms(2);
 	lcd_nibble_write(0b0011, LCD_INST_WRITE_SIGNAL);
-	delay_us(5000);
+	delay_ms(2);
 	lcd_nibble_write(0b0011, LCD_INST_WRITE_SIGNAL);
-	delay_us(5000);
+	delay_ms(2);
 	
 	lcd_nibble_write(0b0010, LCD_INST_WRITE_SIGNAL);                          
-	delay_us(5000);
+	delay_ms(2);
 	
 	lcd_nibble_write(0b0010, LCD_INST_WRITE_SIGNAL);
-	delay_us(5000);
+	delay_ms(2);
 	lcd_nibble_write(0b1000, LCD_INST_WRITE_SIGNAL);     // Function Set ( 0 0 - 0 0 1 DL N F * * )
-	delay_us(5000);
+	delay_ms(2);
 	lcd_nibble_write(0b1110, LCD_INST_WRITE_SIGNAL);        // Display ON/OFF control ( 0 0 - 0 0 0 0 1 D C B )
-	delay_us(5000);
+	delay_ms(2);
 	lcd_instruction_write(LCD_CLEAR); // Clear display
-	delay_us(5000);
+	delay_ms(2);
 	lcd_instruction_write(0b00000110); // Entry Mode Set ( 0 0 0 0 0 0 0 1 I/D S )
-	delay_us(5000);
+	delay_ms(2);
 
 	lcd_cursor_position = 0;
 	lcd_shift_offset = 0;
@@ -61,7 +61,7 @@ void lcd_nibble_write(char nibble,char ctrl_signal)
 
 	lcd_out = nibble & (~LCD_NIBBLE_MASK);
 	lcd_out |= ctrl_signal;
-	write_reg2(lcd_out, LCD_CONTROL_MASK&LCD_NIBBLE_MASK);
+	write_sreg2(LCD_CONTROL_MASK&LCD_NIBBLE_MASK, lcd_out);
 
 	bit_clear_reg2(LCD_EN);
 	

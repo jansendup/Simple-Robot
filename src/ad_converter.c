@@ -1,6 +1,7 @@
 #include "p30F4011.h"
 #include "system.h"
 #include "ad_converter.h"
+#include "motor_control.h"
 
 #define TAD_MIN             153.85E-9				// See Table 17-9 on p449 of the referance manual. (500ksps)
 #define ADCS_VAL           (int)(2*TAD_MIN*FCY - 1)	// See Equation 17-1 on p413 of the referance manual.
@@ -87,10 +88,10 @@ void process_analog_inputs()
        switch(k)
        {
           case MOTOR_1_SENSE:
-             motor1_feedback(value);
+             motor1_feedback(*value);
           break;
           case MOTOR_2_SENSE:
-             motor2_feedback(value);
+             motor2_feedback(*value);
           break;
           case IR_SENSOR_1:
           break;

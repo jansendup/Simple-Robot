@@ -2,8 +2,8 @@
 #include "io_ports.h"
 #include "system.h"
 
-int  reg1 = 0;
-char reg2 = 0;
+extern int sreg1;
+extern char sreg2;
 
 void init_io_ports()
 {
@@ -30,35 +30,4 @@ void init_io_ports()
     DEBUG_LED = 1;        // LED OFF ( Active low )
 	MOTOR1_ENABLE = 0;    // Switch motors off
 	MOTOR2_ENABLE = 0;
-}
-
-
-void write_reg1(int bits, int mask)
-{
-    char i;
-    reg1 = (reg1&mask) | bits;
-
-    SHIFT_REG_1_STROBE = 0;
-	for(i = 15; i >= 0; i--)
-	{
-        SHIFT_REG_1_CLOCK = 0;
-        SHIFT_REG_1_DATA = (reg1 >> i);
-        SHIFT_REG_1_CLOCK = 1;
-	}
-    SHIFT_REG_1_STROBE = 1;
-	
-}
-
-void write_reg2(char bits, char mask)
-{
-    char i;
-    reg2 = (reg2&mask) | bits;
-    SHIFT_REG_2_STROBE = 0;
-	for(i = 7; i >= 0 ; i--)
-	{
-        SHIFT_REG_2_CLOCK = 0;
-        SHIFT_REG_2_DATA = (reg2 >> i);
-        SHIFT_REG_2_CLOCK = 1;
-	}
-    SHIFT_REG_2_STROBE = 1;
 }

@@ -112,16 +112,18 @@
 #define LCD_NIBBLE_MASK              (LCD_DB4_MASK & LCD_DB5_MASK & LCD_DB6_MASK & LCD_DB7_MASK)
 #define LCD_CONTROL_MASK             (LCD_EN_MASK & LCD_RW_MASK & LCD_RS_MASK)
 
-#define bit_set_reg1(BIT)     write_reg1(BIT,~BIT)
-#define bit_set_reg2(BIT)     write_reg2(BIT,~BIT)
-#define bit_clear_reg1(BIT)   write_reg1(0,~BIT)
-#define bit_clear_reg2(BIT)   write_reg2(0,~BIT)
+#define bit_set_reg1(BIT)     write_sreg1(~BIT,BIT)
+#define bit_set_reg2(BIT)     write_sreg2(~BIT,BIT)
+#define bit_clear_reg1(BIT)   write_sreg1(~BIT,0)
+#define bit_clear_reg2(BIT)   write_sreg2(~BIT,0)
 
 #include "system.h"
 
 void init_io_ports(void);
 
-void write_reg1(int bits, int mask);
-void write_reg2(char bits, char mask);
+extern void write_sreg1(int mask,int bits);
+extern void write_sreg2(char mask,char bits);
+extern void set_sreg1(int bits);
+extern void set_sreg2(char bits);
 
 #endif

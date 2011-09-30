@@ -7,8 +7,8 @@
 #include "quad_encoder.h"
 #include "lcd.h"
 
-void flash_led_test();
 void init();
+void flash_led_test();
 
 extern volatile char new_analog_data;
 extern volatile char ultra_sound_idle;
@@ -46,18 +46,10 @@ void flash_led_test()
     while(1){
         DEBUG_LED = !DEBUG_LED;
 		if((i++%2) == 0){
-			//bit_set_reg2(LCD_BL);
-            
-			//PWM_SET_SPEED(1,50);
-            //lcd_character_write('H');
 		}
 		else{
-			//PWM_SET_SPEED(1,80);
-            //lcd_scrn_clear();
-			//bit_clear_reg2(LCD_BL);
-            //write_reg1(0xFFFF,0);
 		}
-        write_reg1(~(1<<(i%16)),0);
+   
         delay_ms(250);
     }
 }
