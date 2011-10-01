@@ -6,6 +6,7 @@
 #include "ad_converter.h"
 #include "quad_encoder.h"
 #include "lcd.h"
+#include "uart.h"
 
 void init();
 void flash_led_test();
@@ -16,6 +17,7 @@ extern volatile char ultra_sound_idle;
 void init()
 {
 	init_io_ports();
+	init_uart();
     init_lcd();
 	init_quad_encoder();
     init_ad_converter();
@@ -44,12 +46,12 @@ void flash_led_test()
 {
 	int i = 0;
     while(1){
-        DEBUG_LED = !DEBUG_LED;
 		if((i++%2) == 0){
+    		DEBUG_LED = !DEBUG_LED;
 		}
 		else{
 		}
    
-        delay_ms(250);
+        delay_ms(500);
     }
 }
