@@ -24,3 +24,5 @@
            - POS
            - SPEED
         - BUZZ
+
+- Implement int_to_str(char*, int) in std_lib.c
