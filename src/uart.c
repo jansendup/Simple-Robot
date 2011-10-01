@@ -86,14 +86,6 @@ void __attribute__((__interrupt__)) _U1RXInterrupt()
             break;
         }
     }
-    
-    
-    
-    if(recieve >= '0' && recieve <= '9')
-    {
-        write_sreg1(_7SEG_1_MASK,recieve - '0');
-        write_sreg1(_7SEG_2_MASK,(9-(recieve - '0'))<<4);
-    }
 }
 
 void main_parser(char terminated)
