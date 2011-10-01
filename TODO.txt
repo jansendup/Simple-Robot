@@ -1,3 +1,26 @@
 - Quadrature Encoder Interface (QEI) for motor control.
 - Process ultra sound readings.
 - Process analog readings.
+
+- UART Debug interface
+    - Possible commands
+        - 7SEG
+           - SET_SRC
+           - VALUE
+        - LCD
+           - SET_SRC
+           - WRITE
+           - CLEAR
+           - LSHIFT
+           - RSHIFT
+        - MOTOR
+           - DUTYC
+           - SPEED
+           - ENABLE
+        - A_D
+           - READ
+           - PLOT
+        - ENC
+           - POS
+           - SPEED
+        - BUZZ
