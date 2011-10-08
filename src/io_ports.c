@@ -30,4 +30,6 @@ void init_io_ports()
     DEBUG_LED = 1;        // LED OFF ( Active low )
 	MOTOR1_ENABLE = 0;    // Switch motors off
 	MOTOR2_ENABLE = 0;
+	set_sreg1(0);
+	set_sreg2(0);
 }

@@ -31,20 +31,22 @@
 .endm
 
 .macro sreg_w i s
-         and.&s& sreg&i&,WREG    ; AND reg value with mask(w0).
+         and.&s& _sreg&i&,WREG    ; AND reg value with mask(w0).
          ior.&s& w1, w0, w0      ; Or the bits in that should change.
-         mov.&s& WREG,sreg&i&    ; Update sreg.
+         mov.&s& WREG,_sreg&i&    ; Update sreg.
          sreg_out w0,&i&,&s&     ; Output new value to shift reg.
 .endm
 
 .macro sreg_s i s
-         mov.&s& WREG,sreg&i&
+         mov.&s& WREG,_sreg&i&
          sreg_out w0,&i&,&s&     ; Output new value to shift reg.
 .endm
 
+.global _sreg1
+.global _sreg2
 .bss
-sreg1:   .space 2
-sreg2:   .space 1
+_sreg1:   .space 2
+_sreg2:   .space 1
 
 .global _write_sreg1
 .global _write_sreg2

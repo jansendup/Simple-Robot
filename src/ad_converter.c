@@ -2,10 +2,15 @@
 #include "system.h"
 #include "ad_converter.h"
 #include "motor_control.h"
+#include "uart.h"
+#include "io_ports.h"
 
 #define SAMPLE_RATE         56000
 #define TAD_MIN            (1/(SAMPLE_RATE*13.0))       // See Table 17-9 on p449 of the referance manual. (500ksps)
 #define ADCS_VAL           (int)(2*TAD_MIN*FCY - 1)     // See Equation 17-1 on p413 of the referance manual.
+
+#define DEFAULT_STREAM_RATE (SAMPLE_RATE/28)
+#define STREAM_RATE_INC (SAMPLE_RATE/560)
 
 #define AD_PORT_COUNT       7
 #define SAMPLES_PER_PORT    2
@@ -31,7 +36,13 @@ first selected channel after each interrupt occurs.*/
 #define PCFG_VAL  (~CSSL_VAL)
 
 volatile int analog_data[AD_BUFFER_SIZE];
-volatile char new_analog_data;
+volatile char new_analog_data = 0;
+char streaming = 0;
+int stream_rate = DEFAULT_STREAM_RATE;
+int stream_count = 0;
+int stream_id = 0;
+
+void stream_data(char i, int value);
 
 void init_ad_converter(void)
 {
@@ -86,30 +97,33 @@ void process_analog_inputs()
     /*TODO: Process analog input data.*/
     for( i = 0,k = 0; i < AD_BUFFER_SIZE; i++,k++,value++)
     {
-       switch(k)
-       {
-          case MOTOR_1_SENSE:
-             motor1_feedback(*value);
-          break;
-          case MOTOR_2_SENSE:
-             motor2_feedback(*value);
-          break;
-          case IR_SENSOR_1:
-          break;
-          case IR_SENSOR_2:
-          break;
-          case IR_SENSOR_3:
-          break;
-          case IR_SENSOR_4:
-          break;
-          case IR_SENSOR_5:
-          break;
-       }
-       #if SAMPLES_PER_PORT>1
-       if(k == AD_PORT_COUNT){
-          k -= AD_PORT_COUNT;
-       }
-       #endif
+        if(streaming == 1){
+            stream_data(i,*value);
+        }    
+        switch(k)
+        {
+            case MOTOR_1_SENSE:
+                motor1_feedback(*value);
+            break;
+            case MOTOR_2_SENSE:
+                motor2_feedback(*value);
+            break;
+            case IR_SENSOR_1:
+            break;
+            case IR_SENSOR_2:
+            break;
+            case IR_SENSOR_3:
+            break;
+            case IR_SENSOR_4:
+            break;
+            case IR_SENSOR_5:
+            break;
+        }
+        #if SAMPLES_PER_PORT>1
+        if(k == AD_PORT_COUNT){
+            k -= AD_PORT_COUNT;
+        }
+        #endif
     }
 	new_analog_data = 0;
 }
@@ -126,6 +140,79 @@ void __attribute__((__interrupt__)) _ADCInterrupt(void)
 	}
 
 	_ADIF = 0;	// Clear AD interrupt flag.
-	new_analog_data = 1;
-	
+	new_analog_data = 1;	
+}
+
+void stream_data(char i, int value)
+{
+    if( i == stream_id )
+    {
+        stream_count++;
+        if(stream_count >= stream_rate)
+        {
+            write_uart((char)value);
+            stream_count = 0;
+        }
+    }
+}
+
+void ad_stream_hook(char rx)
+{
+    switch(rx)
+    {
+        case HOOK_ENQ:
+            streaming = 1;
+            stream_rate = DEFAULT_STREAM_RATE;
+            stream_count = 0;
+            stream_id = 0;
+            stream_header();
+        break;
+        case HOOK_ESC:
+            streaming = 0;
+            write_str_uart("\13 Ended Streaming A/D... \13");
+        break;
+        case '+':
+            stream_rate -= STREAM_RATE_INC;
+        break;
+        case '-':
+            stream_rate += STREAM_RATE_INC;
+        break;
+        default:
+            if(rx >= '0' && rx <= '6')
+            {
+                stream_id = rx - '0';
+            }
+            stream_header();
+        break;
+    }
+}
+
+void stream_header()
+{
+    write_str_uart("\13 Streaming A/D ");
+    switch(stream_id)
+    {
+        case MOTOR_1_SENSE:
+            write_str_uart("motor1 sense");
+        break;
+        case MOTOR_2_SENSE:
+            write_str_uart("motor2 sense");
+        break;
+        case IR_SENSOR_1:
+            write_str_uart("IR1");
+        break;
+        case IR_SENSOR_2:
+            write_str_uart("IR2");
+        break;
+        case IR_SENSOR_3:
+            write_str_uart("IR3");
+        break;
+        case IR_SENSOR_4:
+            write_str_uart("IR4");
+        break;
+        case IR_SENSOR_5:
+            write_str_uart("IR5");
+        break;
+    }
+    write_str_uart("...\13");
 }

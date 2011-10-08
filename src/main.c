@@ -13,6 +13,7 @@ void flash_led_test();
 
 extern volatile char new_analog_data;
 extern volatile char ultra_sound_idle;
+extern volatile char uart_rx;
 
 void init()
 {
@@ -28,7 +29,7 @@ void init()
 int main()
 {
 	init();
-	flash_led_test();
+	//flash_led_test();
 
 	/** System Loop **/
 	while(1)
@@ -37,6 +38,8 @@ int main()
 			process_analog_inputs();
 		if( ultra_sound_idle )
 			process_ultra_sound();
+		if( uart_rx )
+		    process_uart();
 	}
 
 	return 0;

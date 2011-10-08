@@ -117,11 +117,6 @@
 #define bit_clear_reg1(BIT)   write_sreg1(~BIT,0)
 #define bit_clear_reg2(BIT)   write_sreg2(~BIT,0)
 
-#define set_7seg1(val)   write_sreg1(_7SEG_1_MASK,val)
-#define set_7seg2(val)   write_sreg2(_7SEG_2_MASK,(val)<<4)
-
-#include "system.h"
-
 void init_io_ports(void);
 
 extern void write_sreg1(int mask,int bits);
