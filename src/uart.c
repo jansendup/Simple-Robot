@@ -34,15 +34,19 @@
 #define MT_HOOK  12
 #define MT_ON    13
 #define MT_OFF   14
+#define MT_INFO  15
+#define US_STREAM 16
 
-#define CMD_COUNT 15
+#define CMD_COUNT 16
 char* cmds[] =
 {
     "7SEG_SRC","7SEG_HOOK","7SEG_VAL",
     "A2D_GET","A2D_STREAM",
     "LCD_CLR","LCD_HOOK","LCD_SHFT","LCD_SRC","LCD_W",
-    "MT_DC","MT_DIR","MT_HOOK","MT_ON","MT_OFF"
+    "MT_DC","MT_DIR","MT_HOOK","MT_ON","MT_OFF","MT_INFO",
+    "US_STREAM"
 };
+char *ERROR_MSG = "Err...";
 
 char rx_match_index = 0;
 char rx_matching_cmds[CMD_COUNT];
@@ -62,6 +66,8 @@ char recieve;
 
 void mt_duty_cycle(void);
 void mt_on_off(char on_off);
+void mt_dir();
+void mt_info();
 
 void init_uart()
 {
@@ -231,6 +237,14 @@ void rx_cmd(int match_index)
         case MT_OFF:
             mt_on_off(0);
         break;
+        case MT_HOOK:
+        break;
+        case MT_DIR:
+            mt_dir();
+        break;
+        case MT_INFO:
+            mt_info();
+        break;
     }
 }
 
@@ -258,13 +272,13 @@ void mt_duty_cycle()
     int motor, dutyc;
     char i;
     if(args_length < 3){
-        write_str_uart("Bad syntax.");
+        write_str_uart(ERROR_MSG);
         return;
     }    
     motor = str_to_int(args);
     if(motor > 2 || motor < 1)
     {
-        write_str_uart("Bad syntax.");
+        write_str_uart(ERROR_MSG);
         return;
     }
     while(i++ < args_length)
@@ -283,7 +297,7 @@ void mt_duty_cycle()
             }
             else
             {
-                write_str_uart("Bad syntax.");
+                write_str_uart(ERROR_MSG);
             }
             return;
         }
@@ -293,15 +307,14 @@ void mt_duty_cycle()
 void mt_on_off(char on_off)
 {
     int motor;
-    char i;
     if(args_length < 1){
-        write_str_uart("Bad syntax.");
+        write_str_uart(ERROR_MSG);
         return;
     }
     motor = str_to_int(args);
     if(motor > 2 || motor < 1)
     {
-        write_str_uart("Bad syntax.");
+        write_str_uart(ERROR_MSG);
         return;
     }
     if(motor == 1)
@@ -314,7 +327,48 @@ void mt_on_off(char on_off)
     }
     else
     {
-        write_str_uart("Bad syntax.");
+        write_str_uart(ERROR_MSG);
     }
 }
 
+void mt_dir()
+{
+    int motor;
+    char i,dir;
+    if(args_length < 1){
+        write_str_uart(ERROR_MSG);
+        return;
+    }
+    motor = str_to_int(args);
+    if(motor > 2 || motor < 1)
+    {
+        write_str_uart(ERROR_MSG);
+        return;
+    }
+    while(i++ < args_length)
+    {
+        if(args[i] == ' ')
+        {
+            dir = str_to_int(args+i);
+            if(dir <= 1)
+            {
+                if(motor == 1){
+                    MOTOR1_DIRECTION = dir;
+                }    
+                else{
+                    MOTOR2_DIRECTION = dir;
+                }    
+            }
+            else
+            {
+                write_str_uart(ERROR_MSG);
+            }
+            return;
+        }
+    }
+}
+
+void mt_info()
+{
+    
+}

@@ -43,6 +43,17 @@ int stream_count = 0;
 int stream_id = 0;
 
 void stream_data(char i, int value);
+void stream_header(void);
+
+char** AD_STRINGS = {
+    "Motor 1 Sence",
+    "Motor 2 Sence",
+    "IR1",
+    "IR2",
+    "IR3",
+    "IR4",
+    "IR5"
+};
 
 void init_ad_converter(void)
 {
@@ -99,7 +110,7 @@ void process_analog_inputs()
     {
         if(streaming == 1){
             stream_data(i,*value);
-        }    
+        }
         switch(k)
         {
             case MOTOR_1_SENSE:
@@ -165,6 +176,20 @@ void ad_stream_hook(char rx)
             stream_rate = DEFAULT_STREAM_RATE;
             stream_count = 0;
             stream_id = 0;
+            write_str_uart("\13 0.");
+            write_str_uart(AD_STRINGS[0]);
+            write_str_uart("\13 1.");
+            write_str_uart(AD_STRINGS[1]);
+            write_str_uart("\13 2.");
+            write_str_uart(AD_STRINGS[2]);
+            write_str_uart("\13 3.");
+            write_str_uart(AD_STRINGS[3]);
+            write_str_uart("\13 4.");
+            write_str_uart(AD_STRINGS[4]);
+            write_str_uart("\13 5.");
+            write_str_uart(AD_STRINGS[5]);
+            write_str_uart("\13 6.");
+            write_str_uart(AD_STRINGS[6]);
             stream_header();
         break;
         case HOOK_ESC:
@@ -190,29 +215,6 @@ void ad_stream_hook(char rx)
 void stream_header()
 {
     write_str_uart("\13 Streaming A/D ");
-    switch(stream_id)
-    {
-        case MOTOR_1_SENSE:
-            write_str_uart("motor1 sense");
-        break;
-        case MOTOR_2_SENSE:
-            write_str_uart("motor2 sense");
-        break;
-        case IR_SENSOR_1:
-            write_str_uart("IR1");
-        break;
-        case IR_SENSOR_2:
-            write_str_uart("IR2");
-        break;
-        case IR_SENSOR_3:
-            write_str_uart("IR3");
-        break;
-        case IR_SENSOR_4:
-            write_str_uart("IR4");
-        break;
-        case IR_SENSOR_5:
-            write_str_uart("IR5");
-        break;
-    }
+    write_str_uart(AD_STRINGS[stream_id]);
     write_str_uart("...\13");
 }

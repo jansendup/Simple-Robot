@@ -89,7 +89,8 @@
 #define LED7_MASK     (~LED7)
 #define LED_MASK      (LED1_MASK & LED2_MASK & LED3_MASK & LED4_MASK & LED5_MASK & LED6_MASK & LED7_MASK)
 
-#define BUZZER_MASK   (~(1<<15))
+#define BUZZER        (1<<15)
+#define BUZZER_MASK   (~BUZZER)
 
 #define LCD_DB4        (1)
 #define LCD_DB5        (1<<1)
@@ -114,8 +115,8 @@
 
 #define bit_set_reg1(BIT)     write_sreg1(~BIT,BIT)
 #define bit_set_reg2(BIT)     write_sreg2(~BIT,BIT)
-#define bit_clear_reg1(BIT)   write_sreg1(~BIT,0)
-#define bit_clear_reg2(BIT)   write_sreg2(~BIT,0)
+#define bit_clr_reg1(BIT)     write_sreg1(~BIT,0)
+#define bit_clr_reg2(BIT)     write_sreg2(~BIT,0)
 
 void init_io_ports(void);
 

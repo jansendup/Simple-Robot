@@ -63,7 +63,7 @@ void lcd_nibble_write(char nibble,char ctrl_signal)
 	lcd_out |= ctrl_signal;
 	write_sreg2(LCD_CONTROL_MASK&LCD_NIBBLE_MASK, lcd_out);
 
-	bit_clear_reg2(LCD_EN);
+	bit_clr_reg2(LCD_EN);
 	
 }
 

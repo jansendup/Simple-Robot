@@ -15,14 +15,10 @@
 #define US_TIMER_STOP() T2CONbits.TON = 0;
 #define US_TIMER_RESET() TMR2 = 0;
 
-#define SPEED_OF_SOUND 330.0
-#define CUT_OFF_DISTANCE 1.5
-#define US_TIME_OUT (2*CUT_OFF_DISTANCE/SPEED_OF_SOUND)
-#define US_TIME_OUT_PERIOD (int)(US_TIME_OUT * FCY / 8.0)
-#define US_DISTANCE_TO_COUNTS(dis) (int)(2*dis*FCY/(8.0*SPEED_OF_SOUND))
-
 volatile char ultra_sound_idle = 1;
 volatile char signal_received = 0;
+volatile char us_obj_detected = 0;
+volatile int us_obj_distance = 0;
 
 void init_ultra_sound()
 {
@@ -52,6 +48,8 @@ void process_ultra_sound()
 	if( signal_received )
 	{
 		// TODO: Process readings.
+		us_obj_detected = 1;
+		us_obj_distance = TMR2;
 	}
 	// Restart the timer.
 	US_TIMER_RESET();

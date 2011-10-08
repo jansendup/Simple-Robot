@@ -2,7 +2,7 @@
 .global _delay_ms
 
 .equ fosc, #7372800
-.equ pll,  #8
+.equ pll,  #16
 .equ fcy,  fosc*pll/4
 .equ ms_cycles, fcy/2000
 .equ us_cycles, fcy/1000000

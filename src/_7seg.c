@@ -78,7 +78,7 @@ void _7seg_hook(char rx)
     }
 }
 
-void update(void)
+void update_7seg(void)
 {
     
 }
