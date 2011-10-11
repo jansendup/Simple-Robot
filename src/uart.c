@@ -289,10 +289,10 @@ void mt_duty_cycle()
             if(dutyc <= 100)
             {
                 if(motor == 1){
-                    PWM_SET_SPEED(1,dutyc);
+                    PWM_SET_DC(1,dutyc);
                 }    
                 else{
-                    PWM_SET_SPEED(2,dutyc);
+                    PWM_SET_DC(2,dutyc);
                 }    
             }
             else

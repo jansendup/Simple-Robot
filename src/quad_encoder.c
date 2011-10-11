@@ -1,11 +1,9 @@
 #include "quad_encoder.h"
 #include "p30F4011.h"
+#include "io_ports.h"
 
-#define TICKS_PER_REV  36
-#define COUNT_CENTER   (4*TICKS_PER_REV)
-#define MAX_COUNT      (2*COUNT_CENTER)
-
-int poscnt2;
+volatile unsigned int ENC_CNT2;
+volatile char ENC_DIR2;
 
 void init_quad_encoder(void)
 {
@@ -17,10 +15,9 @@ void init_quad_encoder(void)
    _TQCS = 0;     // Selects internal clock.
    _UPDN_SRC = 1;   // QEB pin State Defines Position Counter Direction
    
-   POSCNT = 0;  // Initialize count to zero.
-   MAXCNT = MAX_COUNT;
-   POSCNT1 = COUNT_CENTER;
-   POSCNT2 = COUNT_CENTER;
+   MAXCNT = ENC_MAX_COUNT;
+   ENC_CNT1 = ENC_COUNT_CENTER;
+   ENC_CNT2 = ENC_COUNT_CENTER;
 
    /** Initialize External Interrupt 1 & 2 phase A and B of second decoder **/
     _INT1IF = 0;    // Clear External Interrupt 1 Flag Status bit
@@ -36,10 +33,32 @@ void init_quad_encoder(void)
 
 void __attribute__((__interrupt__)) _INT1Interrupt(void)
 {
-	_INT1IF = 0;	// Clear External Interrupt 2 Flag Status bit
+	_INT1IF = 0;        // Clear External Interrupt 2 Flag Status bit
+	_INT1EP = !_INT1EP; // Both edges of interrupt.
+	if((QUAD_ENCODE_2_A ^ QUAD_ENCODE_2_B) == 1)
+	{
+    	ENC_CNT2++;
+    	ENC_DIR2 = 1;
+	}
+	else
+	{
+    	ENC_CNT2--;
+    	ENC_DIR2 = 0;
+	}
 }
 
 void __attribute__((__interrupt__)) _INT2Interrupt(void)
 {
-	_INT2IF = 0;	// Clear External Interrupt 2 Flag Status bit
+	_INT2IF = 0;        // Clear External Interrupt 2 Flag Status bit
+	_INT2EP = !_INT2EP; // Both edges of interrupt.
+	if((QUAD_ENCODE_2_A ^ QUAD_ENCODE_2_B) == 0)
+	{
+    	ENC_CNT2++;
+    	ENC_DIR2 = 1;
+	}
+	else
+	{
+    	ENC_CNT2--;
+    	ENC_DIR2 = 0;
+	}
 }

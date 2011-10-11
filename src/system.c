@@ -15,3 +15,20 @@ _FOSC(
 
 _FGS(CODE_PROT_OFF);		// Disable Code Protection
 _FWDT(WDT_OFF);				// Disable Watchdog Timer
+
+volatile char system_upadte = 0;
+
+void init_system()
+{
+    PR3   = (FCY/(64*SYSTEM_TIMER_FRQ));
+    _T3IE  = 1;
+    _T3IP  = 4;
+    _T3IF  = 0;
+    T3CON = 0x8020;  // On and prescale divide by 64
+}
+
+void __attribute__((__interrupt__)) _T3Interrupt(void)
+{
+    _T3IF  = 0;
+    system_upadte = 1;
+}

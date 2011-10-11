@@ -7,29 +7,32 @@
 #include "quad_encoder.h"
 #include "lcd.h"
 #include "uart.h"
+#include "_7seg.h"
+#include "buzzer.h"
 
 void init();
-void flash_led_test();
+void system_update(void);
 
 extern volatile char new_analog_data;
 extern volatile char ultra_sound_idle;
 extern volatile char uart_rx;
+extern volatile char system_upadte;
 
 void init()
 {
 	init_io_ports();
+	init_system();
 	init_uart();
-    init_lcd();
+    //init_lcd();
 	init_quad_encoder();
     init_ad_converter();
-	init_pwm();
+	init_mt_control();
 	init_ultra_sound();
 }
 
 int main()
 {
 	init();
-	//flash_led_test();
 
 	/** System Loop **/
 	while(1)
@@ -40,21 +43,18 @@ int main()
 			process_ultra_sound();
 		if( uart_rx )
 		    process_uart();
+		if( system_upadte )
+		    system_update();
 	}
 
 	return 0;
 }
 
-void flash_led_test()
+void system_update()
 {
-	int i = 0;
-    while(1){
-		if((i++%2) == 0){
-    		DEBUG_LED = !DEBUG_LED;
-		}
-		else{
-		}
-   
-        delay_ms(500);
-    }
+    system_upadte = 0;
+    update_motors();
+    update_7seg();
+    update_buzzer();
+    DEBUG_LED = !DEBUG_LED;
 }

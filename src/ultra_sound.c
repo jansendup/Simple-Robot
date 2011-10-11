@@ -68,7 +68,7 @@ void process_ultra_sound()
 // periode register or if the signal should stop transmitting.
 void __attribute__((__interrupt__)) _T2Interrupt(void)
 {
-	IFS0bits.T2IF = 0;		// Clear Timer2 interrupt status flag
+	IFS0bits.T2IF = 0;              // Clear Timer2 interrupt status flag
 	if(PR2 == TRANSMISSION_LENGTH)
 	{
 		PR2 = US_TIME_OUT_PERIOD;

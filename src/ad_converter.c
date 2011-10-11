@@ -5,7 +5,7 @@
 #include "uart.h"
 #include "io_ports.h"
 
-#define SAMPLE_RATE         56000
+#define SAMPLE_RATE         80000
 #define TAD_MIN            (1/(SAMPLE_RATE*13.0))       // See Table 17-9 on p449 of the referance manual. (500ksps)
 #define ADCS_VAL           (int)(2*TAD_MIN*FCY - 1)     // See Equation 17-1 on p413 of the referance manual.
 
@@ -62,7 +62,7 @@ void init_ad_converter(void)
 
 	// Select the analog conversion clock to match desired data rate with processor clock ADCON3.ADCS<5:0>: A/D Conversion Clock Select bits
 	ADCON3bits.ADRC = 0;	// 0: Use system clock.
-	_ADCS = ADCS_VAL;		// Setup TAD.
+	_ADCS = 0b111111/*ADCS_VAL*/;		// Setup TAD.
 	
 	// Determine how many S/H channels will be used ADCON2<9:8> and ADPCFG<15:0>
 	ADCON2bits.CHPS = 0;	//00 = Converts CH0.

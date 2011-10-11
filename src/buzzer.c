@@ -5,9 +5,9 @@
 
 #define PROX_COUNT_FACTOR   (US_TIME_OUT_PERIOD/SYSTEM_TIMER_FRQ)
 #define PROX_BUZZ_TIME      100E-3
-#define PROX_BUZZ_COUNT     SYSTEM_TIMER_FRQ*PROX_BUZZ_TIME
+#define PROX_BUZZ_COUNT     ((unsigned int)(SYSTEM_TIMER_FRQ*PROX_BUZZ_TIME))
 
-int counter = 0;
+unsigned int counter = 0;
 volatile char buzz_proximity = 1;
 
 extern volatile char us_obj_detected;
@@ -15,7 +15,7 @@ extern volatile int us_obj_distance;
 
 void update_buzzer()
 {
-    int cnt_threshold;
+    unsigned int cnt_threshold;
     counter++;
     
     if(buzz_proximity)
