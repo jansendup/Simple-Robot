@@ -1,0 +1,76 @@
+## SCL Builder Setup File: Do not edit!!
+
+## VERSION: 3.60.00.00
+## FORMAT:  v2.00.01
+## DEVICE:  dsPIC30F4011
+
+## PINREGACTIONS
+us
+6981
+0
+QEA
+QEB
+INT1
+INT2
+--
+436
+1
+0
+1
+0
+--
+873
+1
+1
+1
+1
+--
+5236
+0
+1
+0
+1
+--
+6981
+0
+0
+0
+0
+--
+&
+## ADVPINREGACTIONS
+--
+&
+--
+COND1
+Any
+
+
+
+
+
+
+--
+&
+## CLOCK
+&
+## STIMULUSFILE
+(optional)
+ADCBUF0
+Demand
+0000
+2
+G:\Projects\Embeded Systems\Robot\code\sine.txt
+Hex
+Yes
+(optional)
+--
+&
+## RESPONSEFILE
+&
+## ASYNCH
+&
+## ADVANCEDSCL
+
+1
+&
