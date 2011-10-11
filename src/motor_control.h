@@ -19,8 +19,8 @@ void motor1_feedback(int current);
 void motor2_feedback(int current);
 
 /* Speed in 0.25mm/s */
-void set_speed(long speed);
+void set_speed(signed long speed);
 /* Speed in 0.25mrad/s */
-void set_angular_vel(long w);
+void set_angular_vel(signed long w);
 
 #endif

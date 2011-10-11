@@ -4,22 +4,27 @@
 #include "motor_control.h"
 #include "quad_encoder.h"
 
-#define D 84L
+#define D 74L
 #define R 10L
 
-#define COUNT_SCALE (long)( R*6.2831853*FCY*4 / (ENC_TICKS_PER_REV*4*64) )
+#define K_SHIFT 9
+#define Kp ((signed long)(5.231*(1<<K_SHIFT)))
+#define Ki ((signed long)(1.231*(1<<K_SHIFT)))
 
-long w = 0;
-long speed = 0;
+#define COUNT_SCALE (signed long)( R*6.2831853*FCY / (ENC_TICKS_PER_REV*4*64) )
+#define FP_SHIFT 5
 
-long v1 = 0;
-long v2 = 0;
+signed long w = 0;
+signed long speed = 0;
 
-long v1ri = 0;
-long v2ri = 0;
+signed long v1 = 0;
+signed long v2 = 0;
 
-long v1rp = 0;
-long v2rp = 0;
+signed long v1_ei = 0;
+signed long v2_ei = 0;
+
+signed int dc1 = 0;
+signed int dc2 = 0;
 
 extern unsigned int ENC_CNT2;
 extern char ENC_DIR2;
@@ -67,36 +72,87 @@ void init_mt_control()
 
 void update_motors(void)
 {
-    long delta_count;
-    long _v1,_v2,_v1r,_v2r,_v1rd,_v2rd;
-    int d1,d2;
-    int catch1, catch2;
+    signed long delta_count;
+    signed long _v1,_v2,v1ep,v2ep;
+    signed int d1,d2;
+    signed int corr1,corr2;
+    unsigned int catch1, catch2;
     
     catch1 = ENC_CNT1;
     catch2 = ENC_CNT2;
     ENC_CNT1 = ENC_COUNT_CENTER;
     ENC_CNT2 = ENC_COUNT_CENTER;
-    delta_count = (long)TMR4;
+    delta_count = (signed long)TMR4;
     TMR4 = 0;
     
     d1 = catch1 - ENC_COUNT_CENTER;
     d2 = catch2 - ENC_COUNT_CENTER;
-    _v1 = (d1)*COUNT_SCALE / delta_count ;
-    _v2 = (d2)*COUNT_SCALE / delta_count ;
+    _v1 = (d1)*(COUNT_SCALE << FP_SHIFT) / delta_count ;
+    _v2 = (d2)*(COUNT_SCALE << FP_SHIFT) / delta_count ;
     
-    _v1r = v1 - _v1;
-    _v2r = v2 - _v2;
+    v1ep = _v1 - v1;
+    v2ep = _v2 - v2;
     
-    _v1rd = _v1r - v1rp;
-    _v2rd = _v2r - v2rp;
+    // Calculate correction:
+    corr1 = (Kp*v1ep + Ki*v1ei) >> K_SHIFT;
+    corr2 = (Kp*v2ep + Ki*v2ei) >> K_SHIFT;
     
-    // Calculate:
+    dc1 += corr1;
+    dc2 += corr2;
     
-    v1ri += _v1r;
-    v2ri += _v2r;
+    if(dc1 >= 0)
+    {
+        MOTOR1_DIRECTION = 1;
+        if(dc1 <= PWM_DC_MAX)
+        {
+            PWM_SET_DC(1,dc1);
+        }
+        else
+        {
+            PWM_SET_DC(1,PWM_DC_MAX);
+        }
+    }
+    else
+    {
+        MOTOR1_DIRECTION = 0;
+        if(dc1 >= -PWM_DC_MAX)
+        {
+            PWM_SET_DC(1,-dc1);
+        }
+        else
+        {
+            PWM_SET_DC(1,PWM_DC_MAX);
+        }
+    }
     
-    v1rp = _v1r;
-    v2rp = _v2r;
+    if(dc2 >= 0)
+    {
+        MOTOR2_DIRECTION = 1;
+        if(dc2 <= PWM_DC_MAX)
+        {
+            PWM_SET_DC(2,dc2);
+        }
+        else
+        {
+            PWM_SET_DC(2,PWM_DC_MAX);
+        }
+    }
+    else
+    {
+        MOTOR2_DIRECTION = 0;
+        if(dc2 >= -PWM_DC_MAX)
+        {
+            PWM_SET_DC(2,-dc2);
+        }
+        else
+        {
+            PWM_SET_DC(2,PWM_DC_MAX);
+        }
+    }
+    
+    v1_ei += v1ep;
+    v2_ei += v2ep;
+    
 }
 
 void motor1_feedback(int current)
@@ -111,16 +167,16 @@ void motor2_feedback(int current)
     v1 = speed - (D/2)*w;\
     v2 = speed + (D/2)*w;
 
-/* Speed in 0.25mm/s */
-void set_speed(long _speed)
+/* Speed in mm/s */
+void set_speed(signed long _speed)
 {
-    speed = _speed;
+    speed = _speed << FP_SHIFT;
     RECALC();
 }
 
-/* Speed in 0.25mrad/s */
-void set_angular_vel(long _w)
+/* Speed in mrad/s */
+void set_angular_vel(signed long _w)
 {
-    w = _w;
+    w = _w << FP_SHIFT;
     RECALC();
 }
