@@ -17,17 +17,23 @@
 
 .macro sreg_out reg,i,s
          bclr STR&i&_P, #STR&i&_B
-         DO #R&i&SIZE-1,2f              ; Loop for each bit in SR.
-         bclr CLK&i&_P, #CLK&i&_B   ; Make CLK low.
-         rlc.&s& \reg,\reg              ; Shift current bit to be sent to C-flag.
+         DO #R&i&SIZE,3f              ; Loop for each bit in SR.
+		 REPEAT #4000
+		 NOP
+		 bclr CLK&i&_P, #CLK&i&_B   ; Make CLK low.
+         REPEAT #4000
+		 NOP
+		 rlc.&s& \reg,\reg              ; Shift current bit to be sent to C-flag.
          bra C,1f
          bclr DAT&i&_P, #DAT&i&_B       ; C-flag = 0: Set DATi line low.
-         bra 2f
+		 bra 2f
 1:
          bset DAT&i&_P, #DAT&i&_B       ; C-flag = 1: Set DATi high.
 2:
-         bset CLK&i&_P, #CLK&i&_B       ; Make CLK high to shift DATi into SREGi
-         bset STR&i&_P, #STR&i&_B       ; All bits are shifted in...Strobe Latches.
+		 REPEAT #4000
+		 NOP 
+3:       bset CLK&i&_P, #CLK&i&_B       ; Make CLK high to shift DATi into SREGi        
+		 bset STR&i&_P, #STR&i&_B       ; All bits are shifted in...Strobe Latches.
 .endm
 
 .macro sreg_w i s

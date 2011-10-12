@@ -79,6 +79,7 @@ void __attribute__((__interrupt__)) _T2Interrupt(void)
 	{
 		US_TIMER_STOP();
 		ultra_sound_idle = 1;
+		us_obj_distance = US_TIME_OUT_PERIOD;
 	}
 }
 

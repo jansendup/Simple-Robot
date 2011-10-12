@@ -23,7 +23,7 @@ void update_buzzer()
         if(counter > PROX_BUZZ_COUNT)
         {
             // Turn off buzzer
-            bit_clr_reg1(BUZZER);
+            //bit_clr_reg1(BUZZER);
         }
         if(us_obj_detected)
         {
@@ -31,7 +31,7 @@ void update_buzzer()
             if(counter > cnt_threshold)
             {
                 // Buzz the buzzer
-                bit_set_reg1(BUZZER);
+                //bit_set_reg1(BUZZER);
                 counter = 0;
             }
         }

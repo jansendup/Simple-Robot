@@ -1,6 +1,7 @@
 #include "_7seg.h"
 #include "io_ports.h"
 #include "uart.h"
+#include "p30F4011.h"
 
 char disp1 = 0,disp2 = 0;
 char disp_sel = 0;
@@ -80,5 +81,4 @@ void _7seg_hook(char rx)
 
 void update_7seg(void)
 {
-    
 }

@@ -20,8 +20,8 @@ signed long speed = 0;
 signed long v1 = 0;
 signed long v2 = 0;
 
-signed long v1_ei = 0;
-signed long v2_ei = 0;
+signed long v1ei = 0;
+signed long v2ei = 0;
 
 signed int dc1 = 0;
 signed int dc2 = 0;
@@ -58,10 +58,14 @@ void init_mt_control()
 	/** Setup PWM Control Register 1 **/
 	PWMCON1bits.PMOD1 = 0;	// PWM I/O pin pair is in the independent output mode
 	PWMCON1bits.PMOD2 = 0;	// PWM I/O pin pair is in the independent output mode
+	PWMCON1bits.PMOD3 = 0;	// PWM I/O pin pair is in the independent output mode
 	PWMCON1bits.PEN1H = 1;	// PWM1H pin is enabled for PWM output
 	PWMCON1bits.PEN1L = 0;	// PWM1L pin is disabled for PWM output
 	PWMCON1bits.PEN2H = 1;	// PWM2H pin is enabled for PWM output
 	PWMCON1bits.PEN2L = 0;	// PWM2L pin is disabled for PWM output
+
+	PWMCON1bits.PEN3H = 0;	// PWM3H pin is disabled for PWM output
+	PWMCON1bits.PEN3L = 0;	// PWM3L pin is disabled for PWM output
 
     TMR4 = 0;
     T4CON = 0x8020; // On and prescale divide by 64
@@ -150,8 +154,8 @@ void update_motors(void)
         }
     }
     
-    v1_ei += v1ep;
-    v2_ei += v2ep;
+    v1ei += v1ep;
+    v2ei += v2ep;
     
 }
 

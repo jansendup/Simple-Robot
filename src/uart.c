@@ -68,6 +68,7 @@ void mt_duty_cycle(void);
 void mt_on_off(char on_off);
 void mt_dir();
 void mt_info();
+void mt_hook(char rx);
 
 void init_uart()
 {
@@ -238,6 +239,7 @@ void rx_cmd(int match_index)
             mt_on_off(0);
         break;
         case MT_HOOK:
+			HOOKIT(mt_hook);
         break;
         case MT_DIR:
             mt_dir();
@@ -274,7 +276,8 @@ void mt_duty_cycle()
     if(args_length < 3){
         write_str_uart(ERROR_MSG);
         return;
-    }    
+    }
+	
     motor = str_to_int(args);
     if(motor > 2 || motor < 1)
     {
@@ -320,10 +323,12 @@ void mt_on_off(char on_off)
     if(motor == 1)
     {
         MOTOR1_ENABLE = on_off;
+		write_str_uart("Motor 1 on_off.");
     }
     else if(motor == 2)
     {
         MOTOR2_ENABLE = on_off;
+		write_str_uart("Motor 2 on_off.");
     }
     else
     {
@@ -352,6 +357,7 @@ void mt_dir()
             dir = str_to_int(args+i);
             if(dir <= 1)
             {
+				write_str_uart("Motor 1 dir set.");
                 if(motor == 1){
                     MOTOR1_DIRECTION = dir;
                 }    
@@ -371,4 +377,45 @@ void mt_dir()
 void mt_info()
 {
     
+}
+
+void mt_hook (char rx)
+{
+	switch(rx)
+	{
+		case HOOK_ENQ:
+            write_str_uart("\n Motors Hooked. \n");
+		break;
+		case HOOK_ESC:
+            write_str_uart("\n Motors released. \n");
+		break;
+		case '+':
+			if(PDC1 < PWM_DC_MAX)
+			PDC1++;
+			if(PDC2 < PWM_DC_MAX)
+			PDC2++;
+		break;
+		case '-':
+			if(PDC1 > 0)
+			PDC1--;
+			if(PDC2 > 0)
+			PDC2--;
+		break;
+		case 'e':
+			MOTOR1_ENABLE = 1;
+			MOTOR2_ENABLE = 1;
+			write_str_uart("\n Motors enabled. \n");
+		break;
+		case 'd':
+ 			MOTOR1_ENABLE = 0;
+			MOTOR2_ENABLE = 0;
+			write_str_uart("\n Motors dissabled. \n");
+		break;
+		case 'f':
+			MOTOR1_DIRECTION = 1;
+		break;
+		case 'b':
+			MOTOR1_DIRECTION = 0;
+		break;
+	}
 }
